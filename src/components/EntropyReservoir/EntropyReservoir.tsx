@@ -217,65 +217,102 @@ const EntropyReservoir: React.FC<EntropyReservoirProps> = ({
     }
   };
 
+  // No reservoir visualization
+
   return (
-    <div className="w-full max-w-4xl bg-white rounded-lg border border-gray-200 p-6 flex flex-col items-center gap-6">
+    <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 p-8 flex flex-col items-center gap-8 transition-all duration-500 hover:shadow-xl">
+      {/* Header with title and count */}
       <div className="w-full flex justify-between items-center">
-        <h2 className="text-xl font-medium text-black">Entropy Reservoir</h2>
-        <div className="text-xl border border-gray-200 rounded px-4 py-1 text-black flex items-center">
+        <h2 className="text-2xl font-bold text-black flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Entropy Reservoir
+        </h2>
+        <div className="text-2xl font-bold bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200 rounded-lg px-6 py-2 text-black flex items-center shadow-sm">
           {isCountLoading ? (
             <div className="flex items-center">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent mr-2"></div>
               <span>Loading...</span>
             </div>
           ) : (
-            <span data-component-name="EntropyReservoir">
+            <span 
+              data-component-name="EntropyReservoir"
+              className="transition-all duration-500 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            >
               {!isNaN(reservoirValue) ? reservoirValue.toLocaleString() : initialValue.toLocaleString()}
             </span>
           )}
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center pt-8 pb-8 w-full">
+      
+      {/* Spacer for better layout */}
+      <div className="h-6"></div>
+      
+      {/* Action buttons and status */}
+      <div className="flex flex-col items-center justify-center w-full">
         <Button 
           onClick={handleGenerateRandom}
-          className="bg-zinc-800 text-white hover:bg-zinc-700 px-6 py-3"
+          variant="gradient"
+          size="lg"
+          className="px-8 py-4 text-lg font-bold w-full max-w-md"
           disabled={isPending || isGenerating || (!isConnected && !isWalletConnected)}
         >
           {isPending || isGenerating ? (
-            <div className="flex items-center">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+            <div className="flex items-center gap-3">
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
               <span>Processing...</span>
             </div>
           ) : (
-            'Get Random Number'
+            <div className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+              <span>Get Random Number</span>
+            </div>
           )}
         </Button>
         
         {(!isConnected && !isWalletConnected) && (
-          <p className="mt-4 text-yellow-600">Please connect your wallet to generate random numbers</p>
-        )}
-        
-        {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-600">
-            <p className="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-              </svg>
-              {error}
-            </p>
+          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-600 flex items-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+            <span>Please connect your wallet to generate random numbers</span>
           </div>
         )}
         
-
+        {error && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 flex items-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            <span>{error}</span>
+          </div>
+        )}
         
+        {/* Transaction status */}
         {txHash && (
-          <TransactionStatus 
-            txHash={txHash} 
-            onComplete={(generatedNumber) => {
-              setRandomNumber(generatedNumber);
-              // We don't clear txHash automatically anymore
-              // It will be cleared when the user clicks Get Random Number again
-            }}
-          />
+          <div className="mt-6 w-full">
+            <TransactionStatus 
+              txHash={txHash} 
+              onComplete={(generatedNumber) => {
+                setRandomNumber(generatedNumber);
+                // We don't clear txHash automatically anymore
+                // It will be cleared when the user clicks Get Random Number again
+              }}
+            />
+          </div>
+        )}
+        
+        {/* Display random number with animation if available */}
+        {randomNumber && (
+          <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200 rounded-lg w-full text-center animate-fadeIn shadow-md">
+            <h3 className="text-lg font-medium text-gray-700 mb-2">Generated Random Number</h3>
+            <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 break-all overflow-hidden">
+              {randomNumber}
+            </div>
+          </div>
         )}
       </div>
     </div>

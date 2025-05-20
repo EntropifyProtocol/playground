@@ -25,6 +25,11 @@
   --color-button-secondary: var(--color-secondary-1);
   --color-highlight: var(--color-accent-2);
   --color-success: var(--color-accent-1);
+  
+  /* Animation durations */
+  --animation-slow: 20s;
+  --animation-medium: 15s;
+  --animation-fast: 10s;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,6 +43,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Inter, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
