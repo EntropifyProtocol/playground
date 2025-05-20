@@ -15,18 +15,24 @@ const Button = ({
   className = '',
   disabled = false
 }: ButtonProps) => {
-  const baseClasses = 'px-4 py-2 rounded-md font-medium transition-colors';
+  const baseClasses = 'px-4 py-2 rounded-md font-medium transition-colors font-[var(--font-inter)]';
   
   const variantClasses = {
-    primary: 'bg-black text-white hover:bg-gray-800',
-    secondary: 'bg-white text-black border border-black hover:bg-gray-100'
+    primary: 'text-white hover:bg-opacity-90',
+    secondary: 'bg-white text-[var(--color-neutral)] border border-[var(--color-neutral)] hover:bg-gray-100'
+  };
+  
+  // Use CSS variables for colors
+  const bgColors = {
+    primary: 'bg-[var(--color-primary)]',
+    secondary: 'bg-white'
   };
 
   const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : '';
   
   return (
     <button 
-      className={`${baseClasses} ${variantClasses[variant]} ${disabledClasses} ${className}`}
+      className={`${baseClasses} ${bgColors[variant]} ${variantClasses[variant]} ${disabledClasses} ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

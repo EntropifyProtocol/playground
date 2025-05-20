@@ -90,7 +90,7 @@ const TransactionStatus: React.FC<TransactionStatusProps> = ({ txHash, onComplet
               {randomNumber ? (
                 <div className="mt-3 p-2 bg-white border border-green-200 rounded">
                   <p className="text-gray-500 text-sm mb-1">Random Number:</p>
-                  <p className="text-s font-mono font-bold text-black">{randomNumber}</p>
+                  <p className="text-s font-bold text-black">{randomNumber}</p>
                 </div>
               ) : (
                 <p className="mt-2 text-yellow-600">No random number found in transaction receipt</p>
