@@ -85,11 +85,11 @@ const EntropyReservoir: React.FC<EntropyReservoirProps> = ({
   // We'll use a direct approach with get-starknet instead of useContractWrite
   const [isPending, setIsPending] = useState(false);
 
-  // Auto-refresh the count every 5 seconds
+  // Auto-refresh the count every 2 seconds
   useEffect(() => {
     const intervalId = setInterval(() => {
       refetch();
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(intervalId);
   }, [refetch]);

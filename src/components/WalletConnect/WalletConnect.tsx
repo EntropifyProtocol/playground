@@ -78,13 +78,13 @@ const WalletConnect: React.FC = () => {
         <Button 
           onClick={handleDisconnect} 
           variant="secondary"
-          className="bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20 transition-all duration-300 hover:shadow-lg hover:scale-105 flex items-center gap-2 group"
+          className="bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20 transition-all duration-300 hover:shadow-lg flex items-center gap-2 group"
         >
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-blue-400"></div>
             <span className="font-medium">{formatAddress(account.address)}</span>
           </div>
-          <span className="text-xs opacity-80 group-hover:opacity-100 transition-opacity duration-300">Disconnect</span>
+          <span className="text-xs">Disconnect</span>
         </Button>
       ) : (
         <Button 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import NetworkSelector from '../NetworkSelector/NetworkSelector';
 import WalletConnect from '../WalletConnect/WalletConnect';
 
@@ -19,20 +20,27 @@ const Header = () => {
         background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary-1) 100%)',
       }}
     >
-      {/* Animated background particles */}
+      {/* Animated background particles
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-20 h-20 rounded-full bg-white opacity-5 blur-xl animate-float-slow"></div>
         <div className="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-white opacity-5 blur-xl animate-float-medium"></div>
         <div className="absolute top-10 right-1/4 w-16 h-16 rounded-full bg-white opacity-5 blur-xl animate-float-fast"></div>
-      </div>
+      </div> */}
 
       {/* Logo with animation */}
       <div 
-        className={`text-2xl font-bold font-[var(--font-space-grotesk)] relative z-10 transition-all duration-1000 ease-out ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+        className={`flex items-center gap-3 text-2xl font-bold font-[var(--font-space-grotesk)] relative z-10 transition-all duration-1000 ease-out ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
       >
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 hover:from-white/90 hover:to-white transition-all duration-300">
+        <Image 
+          src="/logo.svg" 
+          alt="Entropify Logo" 
+          width={64} 
+          height={64} 
+          className="object-contain"
+        />
+        <h1>
           Entropify Playground
-        </span>
+        </h1>
       </div>
 
       {/* Buttons with improved styling */}
