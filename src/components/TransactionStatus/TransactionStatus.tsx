@@ -16,7 +16,7 @@ const TransactionStatus: React.FC<TransactionStatusProps> = ({ txHash, onComplet
     refetchInterval: 2000 // Check for updates every 2 seconds
   });
   
-  const [randomNumber, setRandomNumber] = useState<string | null>(null);
+  // We're using the extracted number directly with onComplete callback
   const [isConfirmed, setIsConfirmed] = useState(false);
   const explorerLink = getExplorerUrl(txHash);
   
@@ -37,11 +37,11 @@ const TransactionStatus: React.FC<TransactionStatusProps> = ({ txHash, onComplet
     if (receipt) {
       setSteps(prev => ({ ...prev, processing: true, confirmed: true }));
       setIsConfirmed(true);
-      const extractedNumber = getRandomNumberFromReceipt(receipt);
+      // Use type assertion to handle the receipt format
+      const extractedNumber = getRandomNumberFromReceipt(receipt as { events?: Array<{keys?: string[], data?: string[]}> });
       
       if (extractedNumber) {
         setSteps(prev => ({ ...prev, completed: true }));
-        setRandomNumber(extractedNumber);
         
         // Call the callback if provided and we have a random number
         if (onComplete) {

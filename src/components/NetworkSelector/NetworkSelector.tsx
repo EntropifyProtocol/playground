@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import Button from '../Button/Button';
 
 const NetworkSelector: React.FC = () => {
   // Since we're only supporting Starknet Sepolia, this is just informational

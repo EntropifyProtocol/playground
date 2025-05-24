@@ -5,7 +5,7 @@ import { connect, disconnect } from 'get-starknet';
 import Button from '../Button/Button';
 
 const WalletConnect: React.FC = () => {
-  const [account, setAccount] = useState<any>(null);
+  const [account, setAccount] = useState<{ address: string } | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
   // Format address for display
@@ -17,7 +17,7 @@ const WalletConnect: React.FC = () => {
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        // @ts-ignore - The typings for get-starknet are not up to date
+        // @ts-expect-error - The typings for get-starknet are not up to date
         const starknet = await connect({ showList: false });
         if (starknet?.isConnected && starknet?.account) {
           setAccount(starknet.account);
@@ -44,7 +44,6 @@ const WalletConnect: React.FC = () => {
     
     try {
       console.log('Opening wallet selector...');
-      // @ts-ignore - The typings for get-starknet are not up to date
       const starknet = await connect({ modalMode: 'alwaysAsk' });
       console.log('Wallet connection result:', starknet);
       

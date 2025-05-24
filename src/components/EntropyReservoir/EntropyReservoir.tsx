@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { connect } from 'get-starknet';
-import { useContract, useContractRead, useAccount, useContractWrite, useConnect } from '@starknet-react/core';
+import { useContract, useContractRead, useAccount } from '@starknet-react/core';
 import Button from '../Button/Button';
 import TransactionStatus from '../TransactionStatus/TransactionStatus';
 import { RESERVOIR_CONTRACT_ADDRESS, RANDOM_PROVIDER_CONTRACT_ADDRESS } from '../../contracts/constants';
@@ -20,8 +20,8 @@ const EntropyReservoir: React.FC<EntropyReservoirProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [randomNumber, setRandomNumber] = useState<string | null>(null);
-  const { address, isConnected } = useAccount();
-  const { connect: connectWallet, connectors } = useConnect();
+  const { isConnected } = useAccount();
+  // We're using get-starknet directly instead of useConnect
   
   // Additional check for wallet connection using get-starknet
   const [isWalletConnected, setIsWalletConnected] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const EntropyReservoir: React.FC<EntropyReservoirProps> = ({
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        // @ts-ignore - The typings for get-starknet are not up to date
+        // @ts-expect-error - The typings for get-starknet are not up to date
         const starknet = await connect({ showList: false });
         if (starknet?.isConnected && starknet?.account) {
           setIsWalletConnected(true);
@@ -52,13 +52,15 @@ const EntropyReservoir: React.FC<EntropyReservoirProps> = ({
   }, []);
   
   // Set up contract for reservoir count
-  const { contract: reservoirContract } = useContract({
+  // Initialize contract but not using directly in component
+  useContract({
     address: RESERVOIR_CONTRACT_ADDRESS,
     abi: RESERVOIR_ABI,
   });
 
   // Set up contract for random number generation
-  const { contract: randomProviderContract } = useContract({
+  // Initialize contract but not using directly in component
+  useContract({
     address: RANDOM_PROVIDER_CONTRACT_ADDRESS,
     abi: RANDOM_PROVIDER_ABI,
   });
@@ -179,7 +181,7 @@ const EntropyReservoir: React.FC<EntropyReservoirProps> = ({
       console.log('Attempting to generate random number...');
       
       // Get the starknet instance with the connected account
-      // @ts-ignore - The typings for get-starknet are not up to date
+      // @ts-expect-error - The typings for get-starknet are not up to date
       const starknet = await connect({ showList: false });
       
       if (!starknet?.isConnected || !starknet?.account) {
@@ -198,18 +200,19 @@ const EntropyReservoir: React.FC<EntropyReservoirProps> = ({
       
       console.log('Transaction submitted:', response);
       setTxHash(response.transaction_hash);
-    } catch (err: any) {
-      console.error('Error generating random number:', err);
+    } catch (err) {
+      const error = err as Error;
+      console.error('Error generating random number:', error);
       
       // Provide more user-friendly error messages
-      if (err.message?.includes('User abort') || err.message?.includes('canceled')) {
+      if (error.message?.includes('User abort') || error.message?.includes('canceled')) {
         setError('Transaction was rejected by the user');
-      } else if (err.message?.includes('insufficient funds')) {
+      } else if (error.message?.includes('insufficient funds')) {
         setError('Insufficient funds to complete this transaction');
-      } else if (err.message?.includes('account is required')) {
+      } else if (error.message?.includes('account is required')) {
         setError('Account is required. Please ensure your wallet is properly connected');
       } else {
-        setError(err.message || 'Failed to generate random number');
+        setError(error.message || 'Failed to generate random number');
       }
     } finally {
       setIsGenerating(false);

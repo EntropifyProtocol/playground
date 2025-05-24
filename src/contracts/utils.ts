@@ -5,11 +5,20 @@ import { RAND_EVENT_KEY, EXPLORER_TX_URL } from './constants';
  * @param receipt The transaction receipt
  * @returns The random number as a string, or null if not found
  */
-export const getRandomNumberFromReceipt = (receipt: any): string | null => {
+// Using a more flexible type to accommodate different receipt formats
+type TransactionReceipt = {
+  events?: Array<{
+    keys?: string[];
+    data?: string[];
+  }>;
+  [key: string]: unknown;
+}
+
+export const getRandomNumberFromReceipt = (receipt: TransactionReceipt): string | null => {
   if (!receipt || !receipt.events) return null;
   
   // Find the Rand event using the key selector
-  const randEvent = receipt.events.find((event: any) => 
+  const randEvent = receipt.events?.find((event) => 
     event.keys && event.keys[0] === RAND_EVENT_KEY
   );
   

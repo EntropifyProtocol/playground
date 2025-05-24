@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
 import { StarknetConfig, jsonRpcProvider, argent, braavos } from '@starknet-react/core';
 import {sepolia} from '@starknet-react/chains';
 import { STARKNET_SEPOLIA_RPC } from '../../contracts/constants';
@@ -21,10 +21,10 @@ const StarknetProvider: React.FC<StarknetProviderProps> = ({ children }) => {
   }, []);
 
   // Configure connectors for Argent and Braavos wallets
-  const connectors = [
+  const connectors = useMemo(() => [
     argent(),
     braavos()
-  ];
+  ], []);
 
   // Log connectors for debugging
   useEffect(() => {
